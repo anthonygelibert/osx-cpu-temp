@@ -1,6 +1,6 @@
 /*
- * Apple System Management Control (SMC) Tool 
- * Copyright (C) 2006 devnull 
+ * Apple System Management Control (SMC) Tool
+ * Copyright (C) 2006 devnull
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 
 static io_connect_t conn;
 
-UInt32 _strtoul(char *str, int size, int base)
+static UInt32 _strtoul(char *str, int size, int base)
 {
     UInt32 total = 0;
     int i;
@@ -40,17 +40,17 @@ UInt32 _strtoul(char *str, int size, int base)
     return total;
 }
 
-void _ultostr(char *str, UInt32 val)
+static void _ultostr(char *str, UInt32 val)
 {
     str[0] = '\0';
-    sprintf(str, "%c%c%c%c", 
+    sprintf(str, "%c%c%c%c",
             (unsigned int) val >> 24,
             (unsigned int) val >> 16,
             (unsigned int) val >> 8,
             (unsigned int) val);
 }
 
-kern_return_t SMCOpen(void)
+static kern_return_t SMCOpen(void)
 {
     kern_return_t result;
     mach_port_t   masterPort;
@@ -86,13 +86,13 @@ kern_return_t SMCOpen(void)
     return kIOReturnSuccess;
 }
 
-kern_return_t SMCClose()
+static kern_return_t SMCClose()
 {
     return IOServiceClose(conn);
 }
 
 
-kern_return_t SMCCall(int index, SMCKeyData_t *inputStructure, SMCKeyData_t *outputStructure)
+static kern_return_t SMCCall(int index, SMCKeyData_t *inputStructure, SMCKeyData_t *outputStructure)
 {
     size_t   structureInputSize;
     size_t   structureOutputSize;
@@ -116,7 +116,7 @@ kern_return_t SMCCall(int index, SMCKeyData_t *inputStructure, SMCKeyData_t *out
 
 }
 
-kern_return_t SMCReadKey(UInt32Char_t key, SMCVal_t *val)
+static kern_return_t SMCReadKey(UInt32Char_t key, SMCVal_t *val)
 {
     kern_return_t result;
     SMCKeyData_t  inputStructure;
@@ -167,7 +167,7 @@ double SMCGetTemperature(char *key)
     return 0.0;
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
     SMCOpen();
     printf("temp: +%0.1f°C\n", SMCGetTemperature(SMC_KEY_CPU_TEMP));
