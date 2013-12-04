@@ -1,17 +1,18 @@
-
-CC     = cc
-CFLAGS = -O2 -Wall
+CC     = clang
+CFLAGS = -Ofast -Wall -Wextra
 INC    = -framework IOKit
 PREFIX = /usr/local
-EXEC   = osx-cpu-temp
+EXEC   = sensors
 
-build : $(EXEC)
+all: $(EXEC)
 
-clean : 
-	rm $(EXEC)
-
-$(EXEC) : smc.c
+$(EXEC): smc.c
 	$(CC) $(CFLAGS) $(INC) -o $@ $?
+
+.PHONY: clean install
+
+clean :
+	rm $(EXEC)
 
 install : $(EXEC)
 	install $(EXEC) $(PREFIX)/bin
