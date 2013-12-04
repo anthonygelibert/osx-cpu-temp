@@ -1,43 +1,43 @@
-# OSX CPU Temp
+# OSX CPU Temp 1.0.0
 
-Outputs current CPU temperature in °C for OSX
+Outputs current CPU temperature in °C for OSX.
 
-## Usage 
+## Usage
 
 ### Compiling
-```bash
+```
 make
 ```
 
 ### Running
 
-```bash
-./osx-cpu-temp
+```
+./sensors
 ```
 
 or
 
-```bash
+```
 sudo make install # installs to /usr/local/bin
-osx-cpu-temp
+sensors
 ```
 
 ### Output example
 
 ```
-61.8°C
+temp: +64.1°C
 ```
 
-## Author 
+## Contributeurs
+ - Sébastien Lavoie (<sebastien@lavoie.sl>) : auteur original.
+ - Anthony Gelibert (<anthony.gelibert@me.com>) : diverses modifications.
+  
+## Source
 
-Sébastien Lavoie <sebastien@lavoie.sl>
-
-### Source 
-
-Apple System Management Control (SMC) Tool 
+Apple System Management Control (SMC) Tool
 Copyright (C) 2006
 
-### Inspiration 
+## Inspiration
 
 eidac smcFanControl
 
