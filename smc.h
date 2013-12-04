@@ -21,6 +21,12 @@
 #define __SMC_H__
 #endif
 
+#ifndef __SMC_C__
+#define PUBLIC extern
+#else
+#define PUBLIC
+#endif
+
 #define VERSION               "0.01"
 
 #define KERNEL_INDEX_SMC      2
@@ -88,6 +94,6 @@ typedef struct {
 } SMCVal_t;
 
 
-// prototypes
-double SMCGetTemperature(char *key);
+PUBLIC double SMCGetTemperature(char *key);
 
+#undef PUBLIC
