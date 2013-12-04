@@ -12,7 +12,7 @@ $(EXEC): smc.c
 .PHONY: clean install
 
 clean :
-	rm $(EXEC)
+	rm -f $(EXEC)
 
 install : $(EXEC)
 	install $(EXEC) $(PREFIX)/bin
