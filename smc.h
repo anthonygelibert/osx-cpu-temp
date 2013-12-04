@@ -27,7 +27,7 @@
 #define PUBLIC
 #endif
 
-#define VERSION               "0.01"
+#define SMC_VERSION           "1.0.0"
 
 #define OP_NONE               0
 #define OP_LIST               1
