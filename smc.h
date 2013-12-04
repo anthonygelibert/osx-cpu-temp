@@ -21,6 +21,12 @@
 #define __SMC_H__
 #endif
 
+#ifndef __SMC_C__
+#define PUBLIC extern
+#else
+#define PUBLIC
+#endif
+
 #define VERSION               "0.01"
 
 #define OP_NONE               0
@@ -98,6 +104,6 @@ typedef struct {
 } SMCVal_t;
 
 
-// prototypes
-double SMCGetTemperature(char *key);
+PUBLIC double SMCGetTemperature(char *key);
 
+#undef PUBLIC
