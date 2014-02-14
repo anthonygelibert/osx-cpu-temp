@@ -31,50 +31,6 @@
 
 #define SMC_KEY_CPU_TEMP      "TC0D"
 
-typedef struct {
-    char                  major;
-    char                  minor;
-    char                  build;
-    char                  reserved[1];
-    UInt16                release;
-} SMCKeyData_vers_t;
-
-typedef struct {
-    UInt16                version;
-    UInt16                length;
-    UInt32                cpuPLimit;
-    UInt32                gpuPLimit;
-    UInt32                memPLimit;
-} SMCKeyData_pLimitData_t;
-
-typedef struct {
-    UInt32                dataSize;
-    UInt32                dataType;
-    char                  dataAttributes;
-} SMCKeyData_keyInfo_t;
-
-
-typedef struct {
-  UInt32                  key;
-  SMCKeyData_vers_t       vers;
-  SMCKeyData_pLimitData_t pLimitData;
-  SMCKeyData_keyInfo_t    keyInfo;
-  char                    result;
-  char                    status;
-  char                    data8;
-  UInt32                  data32;
-  SMCBytes_t              bytes;
-} SMCKeyData_t;
-
-
-typedef struct {
-  UInt32Char_t            key;
-  UInt32                  dataSize;
-  UInt32Char_t            dataType;
-  SMCBytes_t              bytes;
-} SMCVal_t;
-
-
 PUBLIC kern_return_t SMCOpen(void);
 PUBLIC double SMCGetTemperature(char *key);
 PUBLIC kern_return_t SMCClose(void);
