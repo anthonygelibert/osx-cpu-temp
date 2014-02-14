@@ -25,6 +25,58 @@
 #include "smc.h"
 #undef  __SMC_C__
 
+#define KERNEL_INDEX_SMC      2
+
+#define SMC_CMD_READ_BYTES    5
+#define SMC_CMD_READ_KEYINFO  9
+
+#define DATATYPE_SP78         "sp78"
+
+typedef struct {
+    char                  major;
+    char                  minor;
+    char                  build;
+    char                  reserved[1];
+    UInt16                release;
+} SMCKeyData_vers_t;
+
+typedef struct {
+    UInt16                version;
+    UInt16                length;
+    UInt32                cpuPLimit;
+    UInt32                gpuPLimit;
+    UInt32                memPLimit;
+} SMCKeyData_pLimitData_t;
+
+typedef struct {
+    UInt32                dataSize;
+    UInt32                dataType;
+    char                  dataAttributes;
+} SMCKeyData_keyInfo_t;
+
+typedef char              SMCBytes_t[32];
+
+typedef struct {
+    UInt32                  key;
+    SMCKeyData_vers_t       vers;
+    SMCKeyData_pLimitData_t pLimitData;
+    SMCKeyData_keyInfo_t    keyInfo;
+    char                    result;
+    char                    status;
+    char                    data8;
+    UInt32                  data32;
+    SMCBytes_t              bytes;
+} SMCKeyData_t;
+
+
+typedef struct {
+    UInt32Char_t            key;
+    UInt32                  dataSize;
+    UInt32Char_t            dataType;
+    SMCBytes_t              bytes;
+} SMCVal_t;
+
+
 static io_connect_t conn;
 
 static UInt32 _strtoul(char *str, int size, int base)
@@ -37,7 +89,7 @@ static UInt32 _strtoul(char *str, int size, int base)
         if (base == 16)
             total += str[i] << (size - 1 - i) * 8;
         else
-           total += (unsigned char) (str[i] << (size - 1 - i) * 8);
+            total += (unsigned char) (str[i] << (size - 1 - i) * 8);
     }
     return total;
 }
@@ -52,7 +104,7 @@ static void _ultostr(char *str, UInt32 val)
             (unsigned int) val);
 }
 
-static kern_return_t SMCOpen(void)
+kern_return_t SMCOpen(void)
 {
     kern_return_t result;
     mach_port_t   masterPort;
@@ -88,7 +140,7 @@ static kern_return_t SMCOpen(void)
     return kIOReturnSuccess;
 }
 
-static kern_return_t SMCClose()
+kern_return_t SMCClose()
 {
     return IOServiceClose(conn);
 }
@@ -102,19 +154,19 @@ static kern_return_t SMCCall(int index, SMCKeyData_t *inputStructure, SMCKeyData
     structureInputSize = sizeof(SMCKeyData_t);
     structureOutputSize = sizeof(SMCKeyData_t);
 
-    #if MAC_OS_X_VERSION_10_5
+#if MAC_OS_X_VERSION_10_5
     return IOConnectCallStructMethod( conn, index,
-                            // inputStructure
-                            inputStructure, structureInputSize,
-                            // ouputStructure
-                            outputStructure, &structureOutputSize );
-    #else
+            // inputStructure
+            inputStructure, structureInputSize,
+            // ouputStructure
+            outputStructure, &structureOutputSize );
+#else
     return IOConnectMethodStructureIStructureO( conn, index,
-                                                structureInputSize, /* structureInputSize */
-                                                &structureOutputSize,   /* structureOutputSize */
-                                                inputStructure,        /* inputStructure */
-                                                outputStructure);       /* ouputStructure */
-    #endif
+            structureInputSize, /* structureInputSize */
+            &structureOutputSize,   /* structureOutputSize */
+            inputStructure,        /* inputStructure */
+            outputStructure);       /* ouputStructure */
+#endif
 
 }
 
@@ -167,13 +219,4 @@ double SMCGetTemperature(char *key)
     }
     // read failed
     return 0.0;
-}
-
-int main(void)
-{
-    SMCOpen();
-    printf("temp: +%0.1f°C\n", SMCGetTemperature(SMC_KEY_CPU_TEMP));
-    SMCClose();
-
-    return 0;
 }
