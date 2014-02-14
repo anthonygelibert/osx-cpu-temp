@@ -68,6 +68,7 @@ typedef struct {
     SMCBytes_t              bytes;
 } SMCKeyData_t;
 
+typedef char              UInt32Char_t[5];
 
 typedef struct {
     UInt32Char_t            key;
