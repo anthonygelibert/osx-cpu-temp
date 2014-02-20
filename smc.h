@@ -29,7 +29,7 @@
 #define PUBLIC
 #endif
 
-#define SMC_KEY_CPU_TEMP      "TC0D"
+#define SMC_KEY_CPU_TEMP      "TC0P"
 
 PUBLIC kern_return_t SMCOpen(void);
 PUBLIC double SMCGetTemperature(char *key);
